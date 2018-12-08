@@ -5,8 +5,110 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EnvelopeManager"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
+        DataContext="{Binding VM, RelativeSource={RelativeSource Self}}"
+        SizeToContent="WidthAndHeight" Closing="Window_Closing"
+        Title="Envelope Manager">
+    <Grid x:Name="grdMain" Margin="5" Background="DarkGray">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Border x:Name="brdrGrdTop" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1" Margin="10,10,10,5" Background="White">
+            <Grid x:Name="grdTop" Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="lblTransactionHistoryFile" Text="Transaction History File:" Grid.Row="0" Grid.Column="0" Margin="6,14,3.6,14.8" VerticalAlignment="Center"/>
+                <TextBox x:Name="txtLogFile" Grid.Row="0" Grid.Column="1" Margin="5" MinWidth="300" MinHeight="24" Padding="3" VerticalAlignment="Center" Background="#F0F0F0"
+                         Text="{Binding TransactionHistoryFile}" IsReadOnly="True"/>
+                <Button x:Name="btnBrowse" Content="_Browse" Grid.Row="0" Grid.Column="2" Margin="5" Width="100" Height="35" Click="btnBrowse_Click"/>
+                <Button x:Name="btnSave" Content="_Save" Grid.Row="0" Grid.Column="3" Margin="5" Width="100" Height="35" Click="btnSave_Click"/>
+                <Button x:Name="btnViewHistory" Content="_View History" Grid.Row="0" Grid.Column="4" Margin="5" Width="100" Height="35" Click="btnViewHistory_Click"/>
+            </Grid>
+        </Border>
+        <Border x:Name="brdrGrdEnvelopes" Grid.Row="1" Grid.Column="0" BorderBrush="Black" BorderThickness="1" Margin="10,5,5,10" Background="White">
+            <Grid x:Name="grdEnvelopes" Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock x:Name="lblEnvelopes" Text="Envelopes" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" FontSize="16"/>
+
+                <ListView x:Name="listEnvelopes" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" ItemsSource="{Binding Envelopes}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Envelope" DisplayMemberBinding="{Binding Name}"/>
+                            <GridViewColumn Header="Amount" DisplayMemberBinding="{Binding Amount, StringFormat='{}{0:C2}'}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+                <TextBlock x:Name="lblAddEnvelope" Text="Add Envelope:" Grid.Row="2" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
+                <TextBox x:Name="txtAddEnvelope" Grid.Row="2" Grid.Column="1" Margin="5" MinHeight="24" Padding="3" MinWidth="100" VerticalAlignment="Center"
+                         Text="{Binding AddEnvelopeName, UpdateSourceTrigger=PropertyChanged}" KeyDown="txtAddEnvelope_KeyDown"/>
+                <Button x:Name="btnAddEnvelope" Grid.Row="2" Grid.Column="2" Content="Add" Height="35" Width="100" Margin="5" Click="btnAddEnvelope_Click"
+                        IsEnabled="{Binding AddEnvelopeEnabled}"/>
+            </Grid>
+        </Border>
+        <Border x:Name="brdrGrdAddTransaction" Grid.Row="1" Grid.Column="1" BorderBrush="Black" BorderThickness="1" Margin="5,5,10,10" Background="White">
+            <Grid x:Name="grdAddTransaction" Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock x:Name="lblAddTransaction" Text="Add Transaction" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" FontSize="16"/>
+                
+                <TextBlock x:Name="lblTransactionType" Text="Type:" Grid.Row="1" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
+                <ComboBox x:Name="cmbTransactionType" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="5" VerticalAlignment="Center" MinHeight="24"
+                          ItemsSource="{Binding TransactionTypes}" SelectedItem="{Binding SelectedTransactionType}"/>
+
+                <TextBlock x:Name="lblFrom" Text="From:" Grid.Row="2" Grid.Column="0" Margin="5" VerticalAlignment="Center"
+                           Visibility="{Binding FromEnvelopeDropDownVisibility}"/>
+                <ComboBox x:Name="cmbFrom" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="5" VerticalAlignment="Center" MinHeight="24"
+                          ItemsSource="{Binding EnvelopeNames, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding FromEnvelope}" Visibility="{Binding FromEnvelopeDropDownVisibility}"/>
+
+                <TextBlock x:Name="lblTo" Text="To:" Grid.Row="3" Grid.Column="0" Margin="5" VerticalAlignment="Center"
+                           Visibility="{Binding ToEnvelopeDropDownVisibility}"/>
+                <ComboBox x:Name="cmbTo" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Margin="5" VerticalAlignment="Center" MinHeight="24"
+                          ItemsSource="{Binding EnvelopeNames, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding ToEnvelope}" Visibility="{Binding ToEnvelopeDropDownVisibility}"/>
+
+                <TextBlock x:Name="lblAmount" Text="Amount:" Grid.Row="4" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
+                <TextBox x:Name="txtAmount" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Margin="5" MinHeight="24" Padding="3" TextAlignment="Right"
+                         Text="{Binding TransactionAmountStr, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock x:Name="lblComment" Text="Comment:" Grid.Row="5" Grid.Column="0" Margin="5" VerticalAlignment="Top"/>
+                <TextBox x:Name="txtComment" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Margin="5" MinHeight="75"
+                         Text="{Binding TransactionComment}" AcceptsReturn="True"/>
+
+                <Button x:Name="btnAddTransaction" Content="_Add" Grid.Row="6" Grid.Column="2" Margin="5" Width="100" Height="35" Click="btnAddTransaction_Click"
+                        IsEnabled="{Binding AddTransactionEnabled}"/>
+            </Grid>
+        </Border>
     </Grid>
 </Window>
