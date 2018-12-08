@@ -40,6 +40,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -58,10 +59,14 @@
                     </ListView.View>
                 </ListView>
 
-                <TextBlock x:Name="lblAddEnvelope" Text="Add Envelope:" Grid.Row="2" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
-                <TextBox x:Name="txtAddEnvelope" Grid.Row="2" Grid.Column="1" Margin="5" MinHeight="24" Padding="3" MinWidth="100" VerticalAlignment="Center"
+                <TextBlock x:Name="lblTotal" Text="Account Total:" Grid.Row="2" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
+                <TextBox x:Name="txtAccountTotal" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="5" MinHeight="24" Padding="3" TextAlignment="Right"
+                         Text="{Binding AccountTotal, StringFormat='{}{0:C2}'}" IsReadOnly="True"/>
+
+                <TextBlock x:Name="lblAddEnvelope" Text="Add Envelope:" Grid.Row="3" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
+                <TextBox x:Name="txtAddEnvelope" Grid.Row="3" Grid.Column="1" Margin="5" MinHeight="24" Padding="3" MinWidth="100" VerticalAlignment="Center"
                          Text="{Binding AddEnvelopeName, UpdateSourceTrigger=PropertyChanged}" KeyDown="txtAddEnvelope_KeyDown"/>
-                <Button x:Name="btnAddEnvelope" Grid.Row="2" Grid.Column="2" Content="Add" Height="35" Width="100" Margin="5" Click="btnAddEnvelope_Click"
+                <Button x:Name="btnAddEnvelope" Grid.Row="3" Grid.Column="2" Content="Add" Height="35" Width="100" Margin="5" Click="btnAddEnvelope_Click"
                         IsEnabled="{Binding AddEnvelopeEnabled}"/>
             </Grid>
         </Border>

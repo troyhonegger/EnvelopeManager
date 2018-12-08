@@ -43,6 +43,9 @@ namespace EnvelopeManager
         private ObservableCollection<Envelope> m_envelopes = new ObservableCollection<Envelope>();
         public ObservableCollection<Envelope> Envelopes { get => m_envelopes; protected set => SetIfChanged(ref m_envelopes, value); }
 
+        private decimal m_accountTotal = 0.00m;
+        public decimal AccountTotal { get => m_accountTotal; set => SetIfChanged(ref m_accountTotal, value); }
+
         private string m_addEnvelopeName = string.Empty;
         public string AddEnvelopeName { get => m_addEnvelopeName; set => SetIfChanged(ref m_addEnvelopeName, value, UpdateAddEnvelopeEnabled); }
 
@@ -151,6 +154,15 @@ namespace EnvelopeManager
                     Envelopes.Add(new Envelope(transaction.FromEnvelope, -transaction.Amount));
                     EnvelopeNames.Add(transaction.FromEnvelope);
                 }
+            }
+            switch (transaction.Type)
+            {
+                case TransactionType.Deposit:
+                    AccountTotal += transaction.Amount;
+                    break;
+                case TransactionType.Withdrawal:
+                    AccountTotal -= transaction.Amount;
+                    break;
             }
             UnsavedChanges = true;
         }
