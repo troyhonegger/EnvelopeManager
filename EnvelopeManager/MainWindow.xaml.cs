@@ -17,6 +17,7 @@ using Microsoft.Win32;
 
 namespace EnvelopeManager
 {
+    // Note - the icon for this program was found at http://www.iconarchive.com/show/flatastic-11-icons-by-custom-icon-design/Cash-icon.html
     public partial class MainWindow : Window
     {
         public EnvelopeManagerViewModel VM { get; set; } = new EnvelopeManagerViewModel();
