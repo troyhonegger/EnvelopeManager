@@ -14,7 +14,6 @@ using LINQtoCSV;
 
 namespace EnvelopeManager
 {
-    //TODO: record total
     public class EnvelopeManagerViewModel : INotifyPropertyChanged
     {
         private bool m_unsavedChanges = false;
@@ -221,57 +220,5 @@ namespace EnvelopeManager
         public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion INotifyPropertyChanged
-    }
-
-    public class Envelope : INotifyPropertyChanged
-    {
-        private string m_name;
-        public string Name { get => m_name; set => SetIfChanged(ref m_name, value); }
-        private decimal m_amount = 0.00m;
-        public decimal Amount { get => m_amount; set => SetIfChanged(ref m_amount, value); }
-
-        public Envelope() : this("") { }
-        public Envelope(string name) : this(name, 0.00m) { }
-        public Envelope(string name, decimal amount) { Name = name; Amount = amount; }
-
-        private void SetIfChanged<T>(ref T member, T value, Action callback = null, [System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            if (!EqualityComparer<T>.Default.Equals(member, value))
-                SetValue(ref member, value, callback, propertyName);
-        }
-        private void SetValue<T>(ref T member, T value, Action callback = null, [System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            member = value;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            callback?.Invoke();
-        }
-        public event PropertyChangedEventHandler PropertyChanged;
-    }
-
-    public class TransactionRecord
-    {
-        [CsvColumn(Name = nameof(Date))]
-        public DateTime Date { get; set; }
-        [CsvColumn(Name = nameof(Type))]
-        public TransactionType Type { get; set; }
-        // Ignored for deposits
-        [CsvColumn(Name = nameof(FromEnvelope))]
-        public string FromEnvelope { get; set; }
-        // Ignored for withdrawals
-        [CsvColumn(Name = nameof(ToEnvelope))]
-        public string ToEnvelope { get; set; }
-        [CsvColumn(Name = nameof(Amount), OutputFormat = "C2")]
-        public decimal Amount { get; set; }
-        [CsvColumn(Name = nameof(Comment))]
-        public string Comment { get; set; }
-
-        public TransactionRecord() { }
-    }
-
-    public enum TransactionType
-    {
-        Deposit = 0,
-        Withdrawal = 1,
-        Transfer = 2
     }
 }
