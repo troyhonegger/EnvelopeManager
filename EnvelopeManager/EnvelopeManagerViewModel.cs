@@ -86,6 +86,7 @@ namespace EnvelopeManager
             TransactionHistory.Clear();
             Envelopes.Clear();
             EnvelopeNames.Clear();
+            AccountTotal = 0.00m;
             if (!string.IsNullOrEmpty(TransactionHistoryFile) && File.Exists(TransactionHistoryFile))
             {
                 try
@@ -100,6 +101,7 @@ namespace EnvelopeManager
                     Envelopes.Clear();
                     EnvelopeNames.Clear();
                     TransactionHistory.Clear();
+                    AccountTotal = 0.00m;
                     throw;
                 }
                 finally

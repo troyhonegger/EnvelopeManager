@@ -150,6 +150,7 @@ namespace EnvelopeManager
             if (transaction.Type == TransactionType.Withdrawal || transaction.Type == TransactionType.Transfer)
                 transaction.FromEnvelope = VM.FromEnvelope;
             VM.AddTransaction(transaction);
+            VM.TransactionAmountStr = string.Empty;
             VM.TransactionComment = string.Empty;
         }
 

@@ -118,7 +118,7 @@
 
                 <TextBlock x:Name="lblComment" Text="Comment:" Grid.Row="5" Grid.Column="0" Margin="5" VerticalAlignment="Top"/>
                 <TextBox x:Name="txtComment" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Margin="5" MinHeight="75"
-                         Text="{Binding TransactionComment}" AcceptsReturn="True"/>
+                         Text="{Binding TransactionComment, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True"/>
 
                 <Button x:Name="btnAddTransaction" Content="_Add" Grid.Row="6" Grid.Column="2" Margin="5" Width="100" Height="35" Click="btnAddTransaction_Click"
                         IsEnabled="{Binding AddTransactionEnabled}"/>
