@@ -57,6 +57,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DecimalToColorConverter.cs" />
     <Compile Include="TransactionRecord.cs" />
     <Page Include="TransactionHistoryWindow.xaml">
       <SubType>Designer</SubType>
